@@ -3,25 +3,34 @@ import crypto from "crypto";
 
 const app = express();
 
-const datas = [
+const data = [
     {
         id: crypto.randomUUID(),
         name: "Alice",
         age: 10,
     },
+    {
+        id: crypto.randomUUID(),
+        name: "Bob",
+        age: 11,
+    },
 ];
 
-app.get("/data/", (req, res) => {
-    res.send(datas);
+app.get("/data", (req, res) => {
+    res.send(data);
 });
 
 app.get("/data/:id", (req, res) => {
-    const { id } = req.params;
-    const data = datas.find((data) => data.id === id);
-    if (data) {
-        res.send(data);
-    } else {
+    try {
+        const { id } = req.params;
+        const selectedData = data.find((item) => item.id === id);
+        if (selectedData) {
+            res.send(selectedData);
+            return;
+        }
         res.sendStatus(404);
+    } catch (error) {
+        res.sendStatus(500);
     }
 });
 
