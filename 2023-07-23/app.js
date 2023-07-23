@@ -17,7 +17,25 @@ const data = [
 ];
 
 app.get("/data", (req, res) => {
-    res.send(data);
+    try {
+        const query = req.query;
+        if (Object.keys(query).length === 0) {
+            res.send(data);
+            return;
+        }
+        const getDataByField = data.map((item) => {
+            const newData = {};
+            for (const key in query) {
+                if (parseInt(query[key])) {
+                    newData[key] = item[key];
+                }
+            }
+            return newData;
+        });
+        res.send(getDataByField);
+    } catch (error) {
+        res.sendStatus(500);
+    }
 });
 
 app.get("/data/:id", (req, res) => {
