@@ -47,7 +47,7 @@ app.get("/api/users", (req, res) => {
             res.send(filteredUsers);
         }
         if (query.sort) {
-            let sortedUsers = users;
+            let sortedUsers = [...users];
             if (query.sort === "ASC") {
                 sortedUsers.sort((a, b) => a.age - b.age);
             } else if (query.sort === "DESC") {
