@@ -1,6 +1,7 @@
 // npm run ex1 to execute
 
 import express from "express";
+import crypto from "crypto";
 import { removeDiacritics } from "./tools.js";
 
 const users = [
@@ -73,6 +74,7 @@ const app = express();
 app.use(express.json());
 
 ///////////////////////////////////////////////////////////
+
 app.get("/api/users", (req, res) => {
     try {
         res.send(users);
@@ -83,6 +85,7 @@ app.get("/api/users", (req, res) => {
 });
 
 ///////////////////////////////////////////////////////////
+
 app.get("/api/posts/user/:userId", (req, res) => {
     try {
         const { userId } = req.params;
@@ -129,6 +132,118 @@ app.get("/api/posts/user/:userId", (req, res) => {
         });
 
         res.send(filteredPosts);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+});
+
+///////////////////////////////////////////////////////////
+
+app.get("/api/users/posts", (req, res) => {
+    try {
+        const postsForEachUser = users.map((user) => {
+            const userPosts = posts.filter((post) => post.userId === user.id);
+            return {
+                userId: user.id,
+                posts: userPosts,
+                total: userPosts.length,
+            };
+        });
+        res.send(postsForEachUser);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+});
+
+///////////////////////////////////////////////////////////
+
+app.post("/api/posts", (req, res) => {
+    try {
+        const { userId } = req.query;
+        const userExists = users.find((user) => user.id === userId);
+
+        if (!userExists) {
+            res.status(400).send("Người dùng không tồn tại");
+            return;
+        }
+
+        const { title, body } = req.body;
+        const newPost = {
+            id: crypto.randomUUID(),
+            userId,
+            title,
+            body,
+        };
+        posts.push(newPost);
+        res.send(newPost);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+});
+
+///////////////////////////////////////////////////////////
+
+app.put("/api/posts/:id", (req, res) => {
+    try {
+        const { id } = req.params;
+        const { userId } = req.query;
+        const userExists = users.find((user) => user.id === userId);
+        if (!userExists) {
+            res.status(400).send("Người dùng không tồn tại");
+            return;
+        }
+        const postExist = posts.find((post) => post.id === id);
+        const postIndex = posts.findIndex((post) => post.id === id);
+        if (postIndex === -1) {
+            res.status(400).send("Bài viết không tồn tại");
+            return;
+        }
+        const { title, body } = req.body;
+        posts[postIndex].title = title;
+        posts[postIndex].body = body;
+        res.send(posts);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+});
+
+///////////////////////////////////////////////////////////
+
+app.delete("/api/posts/:id", (req, res) => {
+    try {
+        const { id } = req.params;
+        const postIndex = posts.findIndex((post) => post.id === id);
+        if (postIndex === -1) {
+            res.status(400).send("Bài viết không tồn tại");
+            return;
+        }
+        posts.splice(postIndex, 1);
+        res.send(posts);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+});
+
+///////////////////////////////////////////////////////////
+
+app.delete("/api/users/:id", (req, res) => {
+    try {
+        const { id } = req.params;
+        const userIndex = users.findIndex((user) => user.id === id);
+        if (userIndex === -1) {
+            res.status(400).send("Người dùng không tồn tại");
+            return;
+        }
+        const filteredPosts = posts.filter((post) => post.userId !== id);
+        posts.length = 0;
+        posts.push(...filteredPosts);
+        users.splice(userIndex, 1);
+        res.send(users);
     } catch (error) {
         console.log(error);
         res.status(500).send(error);
