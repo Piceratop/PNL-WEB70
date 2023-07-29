@@ -131,6 +131,18 @@ app.get("/api/posts/user/:userId", (req, res) => {
             return false;
         });
 
+        filteredPosts.sort((a, b) => {
+            const titleA = removeDiacritics(a.title).toLowerCase();
+            const titleB = removeDiacritics(b.title).toLowerCase();
+            if (titleA < titleB) {
+                return -1;
+            }
+            if (titleA > titleB) {
+                return 1;
+            }
+            return 0;
+        });
+
         res.send(filteredPosts);
     } catch (error) {
         console.log(error);
