@@ -40,7 +40,7 @@ userRouter.get("/posts", (req, res) => {
 userRouter.delete("/:id", checkExistingUser, (req, res) => {
     try {
         const { id } = req.params;
-        const userIndex = users.findIndex((user) => user.id === id);
+        const { userIndex } = req;
         const filteredPosts = posts.filter((post) => post.userId !== id);
         posts.length = 0;
         posts.push(...filteredPosts);

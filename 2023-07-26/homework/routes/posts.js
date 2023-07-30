@@ -78,7 +78,6 @@ postRouter.get("/user/:userId", (req, res) => {
 postRouter.post("/", checkExistingUser, (req, res) => {
     try {
         const { userId } = req.query;
-
         const { title, body } = req.body;
         const newPost = {
             id: crypto.randomUUID(),
@@ -99,7 +98,7 @@ postRouter.post("/", checkExistingUser, (req, res) => {
 postRouter.put("/:id", checkExistingUser, checkExistingPost, (req, res) => {
     try {
         const { id } = req.params;
-        const postIndex = posts.findIndex((post) => post.id === id);
+        const { postIndex } = req;
         const { title, body } = req.body;
         posts[postIndex].title = title;
         posts[postIndex].body = body;
@@ -115,7 +114,7 @@ postRouter.put("/:id", checkExistingUser, checkExistingPost, (req, res) => {
 postRouter.delete("/:id", checkExistingPost, (req, res) => {
     try {
         const { id } = req.params;
-        const postIndex = posts.findIndex((post) => post.id === id);
+        const { postIndex } = req;
         posts.splice(postIndex, 1);
         res.send(posts);
     } catch (error) {
