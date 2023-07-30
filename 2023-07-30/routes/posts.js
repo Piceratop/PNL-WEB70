@@ -116,6 +116,7 @@ postRouter.delete("/:id", checkExistingPost, checkExistingUser, (req, res) => {
         const { postIndex } = req;
         if (posts[postIndex].userId !== userId) {
             res.status(403).send("不正");
+            return;
         }
         posts.splice(postIndex, 1);
         res.send(posts);
