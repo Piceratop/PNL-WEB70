@@ -4,24 +4,23 @@ import { ユーザーが存在するかどうかを確認する } from "../ミ�
 
 const 認証ルーター = Router();
 
-認証ルーター.post(
-    "/login",
-    ユーザーが存在するかどうかを確認する,
-    (依頼, 応じる) => {
-        try {
-            const { username, password } = 依頼.query;
-            const user = users.find((user) => user.username === username);
-            if (!user) {
-                応じる.status(400).send(
-                    "ユーザー名またはパスワードが正しくありません。"
-                );
-                return;
-            }
-        } catch (error) {
-            console.log(error);
-            応じる.status(500).send(error);
+認証ルーター.post("/login", (依頼, 応じる) => {
+    try {
+        const { username, password } = 依頼.query;
+        const ユーザーのインデックス = users.findIndex(
+            (ユーザー) => ユーザー.username === username
+        );
+        if (!password || password !== ユーザー.password) {
+            応じる.status(401).json({
+                message: "username hoặc password không đúng",
+            });
+            return;
         }
+        応じる.status(200).json({ message: "Login successful" });
+    } catch (error) {
+        console.log(error);
+        応じる.status(500).send(error);
     }
-);
+});
 
 export default 認証ルーター;

@@ -8,5 +8,6 @@ export function ユーザーが存在するかどうかを確認する(依頼, �
     if (ユーザーのインデックス === -1) {
         return 応じる.status(400).send("username là bắt buộc");
     }
+    依頼.ユーザーのインデックス = ユーザーのインデックス;
     次回();
 }
