@@ -1,7 +1,6 @@
-import express, { Router } from "express";
+import { Router } from "express";
 import crypto from "crypto";
 import { posts } from "../data/posts.js";
-import { users } from "../data/users.js";
 import { checkExistingUser, checkExistingPost } from "../middlewares.js";
 import { removeDiacritics } from "../tools.js";
 
