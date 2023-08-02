@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { listUser } from "../data/users.js";
+import { generateToken } from "../utils/index.js";
 
 const authRouter = Router();
 
@@ -29,7 +30,7 @@ authRouter.post("/login", (req, res) => {
             });
         }
         res.status(200).send({
-            data: user,
+            data: generateToken({ id: user.id }),
             status: 200,
             message: "Success",
         });
