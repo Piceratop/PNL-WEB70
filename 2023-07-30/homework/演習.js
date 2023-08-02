@@ -1,3 +1,5 @@
+// コマンド "npm run ex" を使用してコードを実行します。
+
 import express from "express";
 import ルーター from "./ルーター/インデックス.js";
 
