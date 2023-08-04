@@ -13,6 +13,7 @@ authRouter.post("/login", (req, res) => {
                 status: 400,
                 message: "Missing email or password",
             });
+            return;
         }
         const user = listUser.find((user) => user.email === email);
         if (!user) {
@@ -21,6 +22,7 @@ authRouter.post("/login", (req, res) => {
                 status: 404,
                 message: "User not found",
             });
+            return;
         }
         if (user.password !== password) {
             res.status(401).send({
@@ -28,12 +30,14 @@ authRouter.post("/login", (req, res) => {
                 status: 401,
                 message: "Invalid password",
             });
+            return;
         }
         res.status(200).send({
             data: generateToken({ id: user.id }),
             status: 200,
             message: "Success",
         });
+        return;
     } catch (error) {
         res.status(500).send({
             data: null,
