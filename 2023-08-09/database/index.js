@@ -7,7 +7,7 @@ const Collections = {
 const dbCollection = {};
 
 const connectDb = async () => {
-    const client = new MongoClient("mongodb://localhost:27017");
+    const client = new MongoClient("mongodb://127.0.0.1:27017");
     await client.connect();
     console.log("db connected");
     const db = client.db("WEB70");
