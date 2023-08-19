@@ -47,49 +47,31 @@ export default function Login() {
 
     return (
         <form className="auth--form" onSubmit={handleSubmit}>
-            <label htmlFor="username">Username or Email:</label>
             <input
                 className="input"
                 type="text"
                 id="username"
                 value={username}
+                placeholder="Username ..."
                 onChange={(e) => setUsername(e.target.value)}
             />
-            <label htmlFor="password">Password:</label>
             <input
                 className="input"
                 type="password"
                 id="password"
                 value={password}
+                placeholder="Password ..."
                 onChange={(e) => setPassword(e.target.value)}
             />
             {error && <p className="auth--error">{error}</p>}
 
-            <button
-                className="button"
-                style={{
-                    color: "var(--main-color)",
-                    backgroundColor: "var(--main-color-light)",
-                }}
-                type="submit"
-                onClick={handleSubmit}
-            >
+            <button className="button" type="submit" onClick={handleSubmit}>
                 Login
             </button>
 
-            <span style={{ margin: "1rem 0" }}>
-                Have an account?{" "}
-                <Link
-                    className="button"
-                    style={{
-                        backgroundColor: "var(--main-color)",
-                        color: "white",
-                    }}
-                    to="/register"
-                >
-                    Register
-                </Link>
-            </span>
+            <Link to="/register" style={{ color: "#5268cf" }}>
+                Register Now
+            </Link>
         </form>
     );
 }

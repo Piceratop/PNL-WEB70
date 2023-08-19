@@ -4,34 +4,21 @@ import { AppContext } from "../contexts/AppContext";
 
 export default function Header() {
     const { state, dispatch } = useContext(AppContext);
-    const { page } = state;
+    const { page, userToken } = state;
+
     return (
         <header>
-            <Link className="app--name" to="/">
-                <img src="/logo.png"></img>
-            </Link>
+            <h1>
+                <Link to="/">Social Media App</Link>
+            </h1>
             <nav>
-                {page !== "/login" && (
-                    <Link
-                        to="/login"
-                        className="button"
-                        style={{
-                            color: "var(--main-color)",
-                            backgroundColor: "var(--main-color-light)",
-                        }}
-                    >
+                {!userToken && page !== "/login" && (
+                    <Link to="/login" className="button">
                         Login
                     </Link>
                 )}
-                {page !== "/register" && (
-                    <Link
-                        to="/register"
-                        className="button"
-                        style={{
-                            backgroundColor: "var(--main-color)",
-                            color: "white",
-                        }}
-                    >
+                {!userToken && page !== "/register" && (
+                    <Link to="/register" className="button">
                         Register
                     </Link>
                 )}

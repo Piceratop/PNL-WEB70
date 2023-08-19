@@ -5,12 +5,12 @@ import api from "../api";
 
 export default function Register() {
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordRetype, setPasswordRetype] = useState("");
+    const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const { state, dispatch } = useContext(AppContext);
     const navigate = useNavigate();
-
     useEffect(() => {
         dispatch({ type: "SET_PAGE", payload: "/register" });
     }, []);
@@ -22,11 +22,7 @@ export default function Register() {
             setError("Username must be at least 3 characters long.");
             return;
         }
-        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        if (!isValidEmail) {
-            setError("Invalid email address.");
-            return;
-        }
+
         const isValidPassword = password.length >= 8;
         if (!isValidPassword) {
             setError("Password must be at least 8 characters long.");
@@ -54,54 +50,39 @@ export default function Register() {
 
     return (
         <form className="auth--form" onSubmit={handleSubmit}>
-            <label htmlFor="username">Username:</label>
             <input
                 className="input"
                 type="text"
                 id="username"
                 value={username}
+                placeholder="Username ..."
                 onChange={(e) => setUsername(e.target.value)}
             />
-            <label htmlFor="email">Email:</label>
-            <input
-                className="input"
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <label htmlFor="password">Password:</label>
             <input
                 className="input"
                 type="password"
                 id="password"
                 value={password}
+                placeholder="Password ..."
                 onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+                className="input"
+                type="password"
+                id="password"
+                value={passwordRetype}
+                placeholder="Confirm Password ..."
+                onChange={(e) => setPasswordRetype(e.target.value)}
             />
             {error && <p className="auth--error">{error}</p>}
 
-            <button
-                className="button"
-                style={{ backgroundColor: "var(--main-color)", color: "white" }}
-                type="submit"
-                onClick={handleSubmit}
-            >
+            <button className="button" type="submit">
                 Register
             </button>
 
-            <span style={{ margin: "1rem 0" }}>
-                Have an account?{" "}
-                <Link
-                    className="button"
-                    style={{
-                        color: "var(--main-color)",
-                        backgroundColor: "var(--main-color-light)",
-                    }}
-                    to="/login"
-                >
-                    Login
-                </Link>
-            </span>
+            <Link to="/login" style={{ color: "#5268cf" }}>
+                Back to Login
+            </Link>
         </form>
     );
 }
