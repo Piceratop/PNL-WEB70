@@ -23,7 +23,10 @@ router.post("/upload", upload.single("file"), async (req, res) => {
             url: uploadResult.secure_url,
             createdAt: new Date(),
         });
-        res.status(200).json({ message: "File uploaded successfully" });
+        res.status(200).json({
+            message: "File uploaded successfully",
+            url: uploadResult.secure_url,
+        });
     } catch (error) {
         console.error("Error uploading file:", error);
         res.status(500).json({ error: "Failed to upload file" });
