@@ -1,15 +1,16 @@
 import { Router } from "express";
 import cloudinary from "cloudinary";
 import multer from "multer";
+import dotenv from "dotenv";
 import { dbCollection } from "../database/database.js";
 
 const router = Router();
 const upload = multer({ dest: "uploads/" });
 
 cloudinary.config({
-    cloud_name: "dbs8tddkg",
-    api_key: "231642999655899",
-    api_secret: "IiAhRlMa4xUPjn9GSSUGTh2Nadw",
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 router.post("/upload", upload.single("file"), async (req, res) => {
