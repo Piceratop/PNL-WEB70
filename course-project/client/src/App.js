@@ -7,6 +7,7 @@ import Login from "./auths/Login";
 import Register from "./auths/Register";
 import Home from "./home/Home";
 import Dashboard from "./dashboard/Dashboard";
+import api from "./api";
 
 function applyAppStyle(page) {
     if (page === "/login" || page === "/register") {
@@ -30,6 +31,19 @@ function PrivateRoute({ children }) {
 export default function App() {
     const { state, dispatch } = useContext(AppContext);
     const { page } = state;
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await api.post("/auth/re-login");
+                localStorage.setItem("token", response.data.token);
+                dispatch("SET_USER", response.data.token);
+            } catch (error) {
+                delete localStorage.token;
+            }
+        }
+        fetchData();
+    }, []);
 
     return (
         <div className={`App ${applyAppStyle(page)}`}>

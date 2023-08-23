@@ -9,7 +9,7 @@ const generateToken = (data) => {
     return token;
 };
 
-const verifyToken = (token) => {
+const checkToken = (token) => {
     try {
         return jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
@@ -17,4 +17,4 @@ const verifyToken = (token) => {
     }
 };
 
-export { generateToken, verifyToken };
+export { generateToken, checkToken };

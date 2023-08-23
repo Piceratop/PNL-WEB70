@@ -28,6 +28,12 @@ export default function Register() {
             setError("Password must be at least 8 characters long.");
             return;
         }
+
+        const isValidPasswordRetype = password === passwordRetype;
+        if (!isValidPasswordRetype) {
+            setError("Passwords do not match.");
+            return;
+        }
         try {
             const response = await api.post("/auth/register", {
                 username: username,

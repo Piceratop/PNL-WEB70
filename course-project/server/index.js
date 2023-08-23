@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1", route);
-connectToDatabase(process.env.DB_URI, process.env.DB_NAME);
+connectToDatabase(process.env.DB_URI);
 
 const port = 5000;
 app.listen(port, () => {

@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import { dbCollections } from "../database/db.js";
 import { generateToken } from "../utils/util.js";
+import { validateUser, verifyToken } from "../middlewares/middleware.js";
 
 const authRoute = Router();
 authRoute.post("/register", async (req, res) => {
@@ -44,6 +45,16 @@ authRoute.post("/login", async (req, res) => {
             return res.status(400).json({ error: "Invalid credentials." });
         }
         const token = generateToken({ username });
+        return res.status(200).json({ message: "Login successful", token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+authRoute.post("/re-login", verifyToken, validateUser, (req, res) => {
+    try {
+        const token = generateToken({ username: req.user });
         return res.status(200).json({ message: "Login successful", token });
     } catch (error) {
         console.error(error);

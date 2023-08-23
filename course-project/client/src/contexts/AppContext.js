@@ -2,6 +2,7 @@ import { createContext, useReducer } from "react";
 
 export const AppContext = createContext({
     page: "/",
+    isAuth: false,
     userToken: "",
 });
 
@@ -15,6 +16,7 @@ const appReducer = (state, action) => {
         case "SET_USER":
             return {
                 ...state,
+                isAuth: true,
                 userToken: action.payload,
             };
         default:

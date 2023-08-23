@@ -4,7 +4,7 @@ import { AppContext } from "../contexts/AppContext";
 
 export default function Header() {
     const { state, dispatch } = useContext(AppContext);
-    const { page, userToken } = state;
+    const { page, isAuth } = state;
 
     return (
         <header>
@@ -12,15 +12,28 @@ export default function Header() {
                 <Link to="/">Social Media App</Link>
             </h1>
             <nav>
-                {!userToken && page !== "/login" && (
+                {!isAuth && page !== "/login" && (
                     <Link to="/login" className="button">
                         Login
                     </Link>
                 )}
-                {!userToken && page !== "/register" && (
+                {!isAuth && page !== "/register" && (
                     <Link to="/register" className="button">
                         Register
                     </Link>
+                )}
+                {isAuth && (
+                    <>
+                        <button
+                            className="button"
+                            onClick={() => {
+                                delete localStorage.token;
+                                window.location.reload();
+                            }}
+                        >
+                            Logout
+                        </button>
+                    </>
                 )}
             </nav>
         </header>
